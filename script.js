@@ -29,9 +29,11 @@ adventurer.roll(2);
 
 // Part 2: Class Fantasy
 class Character {
+    static MAX_HEALTH = 100; // Static property - Part 4
+
     constructor(name) {
         this.name = name;
-        this.health = 100;
+        this.health = Character.MAX_HEALTH; // Pt. 4
         this.inventory = [];
     }
 
@@ -40,6 +42,12 @@ class Character {
         console.log(`${this.name} rolled a ${result}.`);
     }
 }
+
+// Test Part 4
+
+console.log(`Maximum health for any character is: ${Character.MAX_HEALTH}`);
+
+
 
 // Create Robin using the Character class
 const robin = new Character("Robin");
@@ -57,10 +65,24 @@ robin.companion.companion.roll();
 
 // Part 3: Class Features
 class Adventurer extends Character {
+    static ROLES = ["Fighter", "Healer", "Wizard"];  // Static property for valid roles PART 4
+
     constructor(name, role) {
         super(name);
+
+// Part 4 validation of roles
+if (!Adventurer.ROLES.includes(role)) {  // Validate role
+    throw new Error(`Invalid role: ${role}. Valid roles are: ${Adventurer.ROLES.join(', ')}`);
+}
+// End of Part 4 Validation test
+
         this.role = role;
         this.inventory.push("bedroll", "50 gold coins");
+    }
+
+// Part 4. Static method to get available Roles
+    static getRoles() {  
+        return Adventurer.ROLES;
     }
 
     scout() {
@@ -80,8 +102,8 @@ class Companion extends Character {
     }
 }
 
-// Re-create Robin and the companions using the new classes
-const robinAdventurer = new Adventurer("Robin", "Warrior");
+// Re-create Robin and the companions using the new classes + roles (pt4)
+const robinAdventurer = new Adventurer("Robin", "Fighter");
 robinAdventurer.inventory = ["sword", "potion", "artifact"];
 robinAdventurer.companion = new Companion("Leo", "Cat");
 robinAdventurer.companion.companion = new Companion("Frank", "Flea");
@@ -93,3 +115,16 @@ robinAdventurer.roll();
 robinAdventurer.companion.roll();
 robinAdventurer.companion.assist();
 robinAdventurer.companion.companion.roll();
+
+// Part 4
+// Examples of using static properties/methods
+console.log(`Maximum health for any character is: ${Character.MAX_HEALTH}`);
+console.log(`Available roles: ${Adventurer.getRoles().join(', ')}`);
+
+try {
+    const invalidAdventurer = new Adventurer("Robin", "Warrior");  // Invalid role
+} catch (e) {
+    console.error(e.message);  // Error will be thrown for invalid role
+}
+
+//Error got catched
