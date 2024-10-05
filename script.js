@@ -40,6 +40,7 @@ class Character {
     roll(mod = 0) {
         const result = Math.floor(Math.random() * 20) + 1 + mod;
         console.log(`${this.name} rolled a ${result}.`);
+        return result; // Bugfixed, forgot to return value instead of logging it out
     }
 }
 
@@ -89,7 +90,40 @@ if (!Adventurer.ROLES.includes(role)) {  // Validate role
         console.log(`${this.name} is scouting ahead...`);
         super.roll();
     }
+// Part 6. Fighting!
+    duel(opponent) {
+        console.log(`The duel between ${this.name} and ${opponent.name} begins!`);
+        while (this.health > 50 && opponent.health > 50) {
+            const myRoll = this.roll();
+            const opponentRoll = opponent.roll();
+
+            if (myRoll > opponentRoll) {
+                opponent.health -= 1;  // If won in dice deal opponent damage -1
+                console.log(`${this.name} wins this round. ${opponent.name}'s health is now ${opponent.health}`);
+            } else if (myRoll < opponentRoll) {
+                this.health -= 1;  // If lost in dice I get damage -1
+                console.log(`${opponent.name} wins this round. ${this.name}'s health is now ${this.health}`);
+            } else {
+                console.log("It's a draw! No damage dealt.");
+            }
+        }
+
+        // If anyone hp is less then 50, then another one won
+        if (this.health > 50) {
+            console.log(`${this.name} wins the duel!`);
+        } else {
+            console.log(`${opponent.name} wins the duel!`);
+        }
+    }
 }
+
+// Creating two fighter to testing duel
+const fighter1 = new Adventurer("Streetfighter", "Fighter");
+const fighter2 = new Adventurer("Pinto-Robin", "Fighter");
+
+fighter1.duel(fighter2);  // Call to method duel for this fighters
+
+// END PART 6
 
 class Companion extends Character {
     constructor(name, type) {
