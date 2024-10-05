@@ -128,3 +128,37 @@ try {
 }
 
 //Error got catched
+
+// Part 5
+
+class AdventurerFactory {
+    constructor(role) {
+        this.role = role;
+        this.adventurers = [];
+    }
+
+    generate(name) {
+        const newAdventurer = new Adventurer(name, this.role);
+        this.adventurers.push(newAdventurer);
+        return newAdventurer;
+    }
+
+    findByIndex(index) {
+        return this.adventurers[index];
+    }
+
+    findByName(name) {
+        return this.adventurers.find((a) => a.name === name);
+    }
+}
+
+
+const healerFactory = new AdventurerFactory("Healer");
+
+// Testing creating
+const hood = healerFactory.generate("Hood");
+const leopold = healerFactory.generate("Leopold");
+
+// Testing logout of created new Adventurers by Factory
+console.log(healerFactory.findByIndex(1));  
+console.log(healerFactory.findByName("Hood"));
